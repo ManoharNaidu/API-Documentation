@@ -14,8 +14,8 @@ info:
 #     description: For local host - regular
 
 servers:
-  - url: "{protocol}://localhost:4000/api/{version}"
-    description: for local host, version {version
+  - url: "{protocol}://api-doc.up.railway.app/api/{version}"
+    description: for local host, version
     variables:
       version:
         default: v1
