@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  title: myDoc
+  description: About writing docs
+  version: 1.0.0
+  contact:
+    email: beesettim27@gmail.com
+    url: "https://Manu.in"
+
+# servers:
+#   - url : "https://localhost:4000/api/v1"
+#     description: For local host - secure
+#   - url : "http://localhost:4000/api/v1"
+#     description: For local host - regular
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: for local host, version {version
+    variables:
+      version:
+        default: v1
+        enum:
+          - v1
+          - v2
+      protocol:
+        default: http
+        enum:
+          - https
+          - http
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in : cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /LCO:
+    get:
+      tags:
+        - String
+      summary: returns a string msg
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Mystring"
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
+  /lcoObject:
+    get:
+      tags:
+        - Object
+      summary: returns object of course(s)
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: integer
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
+  /courses:
+    get:
+      tags:
+        - Array
+      summary: returns all courses
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    price:
+                      type: integer
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
+  /myCourse/{ID}:
+    get:
+      tags:
+        - Object
+      summary: returns course based on request ID
+      parameters:
+        - name: ID
+          in : path
+          required: true
+          default: 1
+          schema:
+            type: string
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: integer
+      
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        500:
+          description: Internal Error
+  /addCourse:
+    post:
+      tags:
+        - Object
+      summary: Adds new course to the existing courses
+      consumes:
+        - application/json
+      prodcues:
+        - application/json
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                price:
+                  type: integer
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: boolean
+      
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
+  /courseQuery:
+    get:
+      tags:
+        - Object
+      summary: Trying to learn about query
+      parameters:
+        - name: location
+          in : query
+          required: true
+          schema:
+            type: string
+            enum: [Vizag, Naharlagun, Chennai]
+        - name: device
+          in : query
+          required: true
+          schema:
+            type: string
+            enum: [Web, Mobile]
+      responses:
+        200:
+          desciption: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: string
+                  device:
+                    type: string
+      
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
+  /courseUpload:
+    post:
+      tags:
+        - Image
+      summary: Uploads course image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          desciption: success
+        400:
+          description: Bad request
+        500:
+          description: Internal Error
